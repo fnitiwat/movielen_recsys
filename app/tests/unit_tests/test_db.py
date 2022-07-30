@@ -4,10 +4,10 @@ from modules.db import DB
 
 class TestDB:
     db = DB(
-        links_csv_path="/Users/nitiwat/Documents/F/jobs/tgd/app/modules/artifacts/cleaned_links.csv",
-        movies_csv_path="/Users/nitiwat/Documents/F/jobs/tgd/app/modules/artifacts/cleaned_movies.csv",
-        ratings_csv_path="/Users/nitiwat/Documents/F/jobs/tgd/app/modules/artifacts/cleaned_ratings.csv",
-        tags_csv_path="/Users/nitiwat/Documents/F/jobs/tgd/app/modules/artifacts/cleaned_tags.csv",
+        links_csv_path="./modules/artifacts/cleaned_links.csv",
+        movies_csv_path="./modules/artifacts/cleaned_movies.csv",
+        ratings_csv_path="./modules/artifacts/cleaned_ratings.csv",
+        tags_csv_path="./modules/artifacts/cleaned_tags.csv",
     )
 
     def test_get_metadata_from_movie_df_user_inside_db(self):
