@@ -1,4 +1,5 @@
 # Movielen (small) Recsys
+
 ### Built With
 
 - FastAPI (serve)
@@ -20,9 +21,11 @@
 
 - train (on local machine)
 
-  ```
-  make train
-  ```
+  - run from train.py
+    ```
+    make train
+    ```
+  - (recommend) run from notebook as /research_phase/train.ipynb
 
 - serve
   - on local machine
@@ -31,25 +34,76 @@
   ```
   - on docker
   ```
-  make docker_run
+  make docker_run_serve
   ```
   - after start serve (local or docker)
-    - endpoint is http://localhost:808/recommend 
-    - api spec is on http://localhost:8089/redoc and http://localhost:8089/docs
-- load test (on local machine)
+    - endpoint is http://localhost:8080/recommendations
+    - api spec is on http://localhost:8080/redoc and http://localhost:8080/docs
+- test
   ```
-  make loadtest
+  make test_serve
   ```
-  - before start load test you have to start serve (local or docker)
-  - after spinup load test you have to access http://localhost:8089 to run load test and see TPS, latency result
 
+### How does it work
 
-### Model Idea
- - use collaborate filtering by KNN to find top 10 lowest cosine similarity
- - unseen user will get recommend with top 10 highest frequency restaurants
+- #### Model
+  - user based collabortation filtering with SVD
+- #### Serve Code Structure
 
-### Assignment answer
- - in docs/Answer MLE Test.docx.pdf
+  - main.py
+    - this module is wrap recommender and serve as RestAPI by FastAPI
+  - modules/db.py
+    - this module is use for query movielen data
+    - now it just load movielen data as dataframe
+  - modules/feature_store.py
+    - this module is use for query feature to use for model prediction
+    - now return features are "histories" (watched movie id) and "unwatched_movie_ids"
+    - now it just query from DB, but in future if model is more complex we can get benefit from this module
+  - modules/recommender.py
+    - this module is wrap model to use for recommend data from user_id
+    - given user_id and use SVD model to predict rating of unwatch movies
+    - then get top 10 movie and return to user
+
+- #### Research Phase (train)
+  - clean data
+    - use pandasprofiling to see static of data
+    - merge movie in movie_df that have duplicate title
+    - remove rating data that have rating outside range[0, 5] and user_id is Nan
+  - train model
+    - user surprise lib to train SVD model
+    - get RMSE of algorithm on train test data split
+    - get Hitrate (precision) of this algorithm on leave one out data split
+    - get final model by use all data as trainset (to memory it)
+    - save artifacts
+
+### How to feed input and get output
+
+- by Swagger UI
+  - after serve access this url http://localhost:8080/docs
+  - you can use interaction web UI to try call API
+- by API
+  - you can call API follow specification by your prefer tools ex. curl, python requests, postman
+
+### How to improve in the future
+
+- #### Data Cleaning
+  - i think, i missing some data cleaning process such as
+    - find, remove user that rating same movie multiple times
+    - some movie that have same title but dont same movie_id, in current version i try to remove it, but i think i should convert movie_id in another table to follow new_movie_id
+- #### Model
+  - In this repository use assumption as data is not change however in real life system data will alway update.
+  - when user and item have very large, i think it will hard to use collaborative filtering because the large of matrix
+  - so after short time research i have seen two step reccomend system that consist of retrieval and ranking step
+    - retrival step try to get a lot candidate (maybe > 1000 items) this step need fast proces time
+    - ranking try to rnk and filter candidate to get small filtered candidate (maybe < 100) with small candidate we can add more features to it
+- #### Serve Structure
+  - if we still use current model 
+    - i think we can save the predict top_k_recommend_movie of each user and save it db or feature store and use it to return api instead compute alway compute rating for each request
+    - we can convert DB (now is load dataframe to memory) into database
+  - if we change model
+    - i think alot componenets have to changes but i need to research on recommend system more
+- #### Test
+  - i think in DB unit test we can mock dataframe in DB and check the result of each function from query logic not just check only format of output
 
 ### Who do I talk to ?
 
