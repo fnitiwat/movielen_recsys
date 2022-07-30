@@ -1,0 +1,6 @@
+scikit-surprise==1.1.1
+black==22.6.0
+uvicorn==0.17.6
+fastapi==0.78.0
+pandas==1.4.2
+pandas-profiling==3.2.0
