@@ -1,7 +1,7 @@
-
 def display(x):
     print(x)
-    
+
+
 # %%
 import surprise
 import os
@@ -22,7 +22,7 @@ from collections import defaultdict
 
 # %% [markdown]
 # # Config
-# 
+#
 
 # %%
 class Config:
@@ -38,7 +38,7 @@ config = Config()
 
 # %% [markdown]
 # # Load data
-# 
+#
 
 # %%
 links_df = pd.read_csv(config.links_csv_path)
@@ -49,7 +49,7 @@ tags_df = pd.read_csv(config.tags_csv_path)
 
 # %% [markdown]
 # # Clean Data
-# 
+#
 
 # %%
 # run pandas profile to see stat of data
@@ -166,7 +166,7 @@ del tags_df
 
 # %% [markdown]
 # # Trainer
-# 
+#
 
 # %%
 class Trainer:
@@ -329,7 +329,7 @@ trainer.run()
 
 # %% [markdown]
 # # Inference
-# 
+#
 
 # %%
 class DB:
@@ -556,10 +556,7 @@ for user_id in user_ids:
 
 # %% [markdown]
 # # Push Artifacts
-# 
+#
 
 # %%
 # ! cp -r $config.artifact_dir ../app/modules/artifacts
-
-
-

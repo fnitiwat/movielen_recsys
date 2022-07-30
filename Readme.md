@@ -97,13 +97,17 @@
     - retrival step try to get a lot candidate (maybe > 1000 items) this step need fast proces time
     - ranking try to rnk and filter candidate to get small filtered candidate (maybe < 100) with small candidate we can add more features to it
 - #### Serve Structure
-  - if we still use current model 
+  - if we still use current model
     - i think we can save the predict top_k_recommend_movie of each user and save it db or feature store and use it to return api instead compute alway compute rating for each request
     - we can convert DB (now is load dataframe to memory) into database
   - if we change model
     - i think alot componenets have to changes but i need to research on recommend system more
 - #### Test
   - i think in DB unit test we can mock dataframe in DB and check the result of each function from query logic not just check only format of output
+
+### Input & Output Example
+
+- see in folder images
 
 ### Who do I talk to ?
 
