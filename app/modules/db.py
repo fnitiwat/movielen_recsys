@@ -29,7 +29,6 @@ class DB:
         watched_movie_ids = self.ratings_df[
             self.ratings_df.userId == user_id
         ].movieId.tolist()
-        watched_movie_ids = [int(movie_id) for movie_id in watched_movie_ids]
         return watched_movie_ids
 
     def get_unwatched_movie_ids_from_user_id(self, user_id: int) -> List[int]:
@@ -40,9 +39,7 @@ class DB:
         return unwatched_movie_ids
 
     def get_user_ids(self) -> List[int]:
-        user_ids = list(set(self.ratings_df.userId))
-        user_ids = [int(user_id) for user_id in user_ids]
-        return user_ids
+        return list(set(self.ratings_df.userId))
 
     def get_top_k_popular_movie_ids(self, k: int) -> List[int]:
         top_k_popular_movie_ids = (

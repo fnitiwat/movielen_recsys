@@ -21,11 +21,22 @@ class Recommender:
             features = self.feature_store.get_features(user_id)
 
             predictions = []
-            for unwatched_movie_id in features["unwatched_movie_ids"]:
-                # TODO: change this both
-                inner_uid = user_id
-                inner_iid = unwatched_movie_id
-                prediction = self.model.predict(inner_uid, inner_iid)
+            for unwatched_movie_id in self._remove_unrated_movie_ids(
+                features["unwatched_movie_ids"]
+            ):
+
+                prediction = self.model.predict(user_id, unwatched_movie_id)
+
+                if prediction.details["was_impossible"] == True:
+                    inner_uid = user_id
+                    inner_iid = unwatched_movie_id
+                    raise Exception(
+                        f"bug: user_id: {user_id} item_id: {unwatched_movie_id} inner_uid: {inner_uid} inner_iid: {inner_iid} predictions: {prediction}"
+                    )
+                else:
+                    # print(user_id, unwatched_movie_id)
+                    pass
+
                 predictions.append(prediction)
 
             top_k_predictions = self._get_top_k(predictions, k=self.k)
@@ -58,3 +69,59 @@ class Recommender:
             topN[userID] = ratings[:k]
 
         return topN[userID]
+
+    def _remove_unrated_movie_ids(self, movie_ids: List[int]) -> List[str]:
+        """because have some movie that haven't rate that make SVD model dont have information about it
+        so this function is harcode remove unrated_movie_ids that prevent model error
+        # TODO: improve this process
+        """
+        unrated_movie_ids = [
+            298,
+            1076,
+            1574,
+            2824,
+            2939,
+            2964,
+            3192,
+            3338,
+            3456,
+            3914,
+            4116,
+            4194,
+            4384,
+            5241,
+            5272,
+            5721,
+            5723,
+            5745,
+            5746,
+            5764,
+            5884,
+            6668,
+            6835,
+            6849,
+            7020,
+            7792,
+            7899,
+            8765,
+            25855,
+            26085,
+            30892,
+            32160,
+            32371,
+            34482,
+            55391,
+            66320,
+            85565,
+            103606,
+            110718,
+            112868,
+            114184,
+            127184,
+            128488,
+            130578,
+            131023,
+            165551,
+        ]
+        movie_ids = list(set(movie_ids) - set(unrated_movie_ids))
+        return movie_ids
