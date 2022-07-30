@@ -105,6 +105,9 @@
 - #### Test
   - i think in DB unit test we can mock dataframe in DB and check the result of each function from query logic not just check only format of output
 
+- #### Retrain Script
+  - if we want to schedule retrain model i think i should split train.py to multiple compoenent to easier to manage ment when large data and long process
+
 ### Input & Output Example
 
 - see in folder images
