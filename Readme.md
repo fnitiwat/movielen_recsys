@@ -84,34 +84,7 @@
 - by API
   - you can call API follow specification by your prefer tools ex. curl, python requests, postman
 
-### How to improve in the future
-
-- #### Data Cleaning
-  - i think, i missing some data cleaning process such as
-    - find, remove user that rating same movie multiple times
-    - some movie that have same title but dont same movie_id, in current version i try to remove it, but i think i should convert movie_id in another table to follow new_movie_id
-- #### Model
-  - In this repository use assumption as data is not change however in real life system data will alway update.
-  - when user and item have very large, i think it will hard to use collaborative filtering because the large of matrix
-  - so after short time research i have seen two step reccomend system that consist of retrieval and ranking step
-    - retrival step try to get a lot candidate (maybe > 1000 items) this step need fast proces time
-    - ranking try to rnk and filter candidate to get small filtered candidate (maybe < 100) with small candidate we can add more features to it
-- #### Serve Structure
-  - if we still use current model
-    - i think we can save the predict top_k_recommend_movie of each user and save it db or feature store and use it to return api instead compute alway compute rating for each request
-    - we can convert DB (now is load dataframe to memory) into database
-  - if we change model
-    - i think alot componenets have to changes but i need to research on recommend system more
-- #### Test
-  - i think in DB unit test we can mock dataframe in DB and check the result of each function from query logic not just check only format of output
-
-- #### Retrain Script
-  - if we want to schedule retrain model i think i should split train.py to multiple compoenent to easier to manage ment when large data and long process
-
 ### Input & Output Example
 
 - see in folder images
 
-### Who do I talk to ?
-
-- fnitiwat001@gmail.com
