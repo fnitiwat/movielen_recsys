@@ -1,0 +1,23 @@
+# User Features
+- watched_histories
+  - have to transform from rating
+  - all rated movieId
+  - schema
+    - userId
+    - watchedMovieIds
+- unwatched_histories
+  - schema
+    - userId
+    - unwatchedMovieIds
+- rating
+  - schema
+    - userId
+    - movieId
+    - rating
+    - timestamp
+# MovieFeatures
+- metadata
+- schema
+  - movieId
+  - title
+  - genres
